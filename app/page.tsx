@@ -1,4 +1,5 @@
-import { Button, Form, Heading, Input, TextButton } from "./globals.styles";
+import { Heading } from "./globals.styles";
+import SignIn from "./components/SignIn/SignIn";
 
 
 export default function Home() {
@@ -9,16 +10,7 @@ export default function Home() {
           <Heading>
             Amber and Callum's Wedding Website
           </Heading>
-          <Form>
-            <Input placeholder="Username" type="text" />
-            <Input placeholder="Password" type="password" />
-            <Button type="submit">
-              Log in
-            </Button>
-          </Form>
-          <TextButton>
-            Create account
-          </TextButton>
+          <SignIn />
         </div>
       </main>
     </div>
