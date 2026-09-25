@@ -20,7 +20,6 @@ export const Button = styled.button<{ $primary?: boolean }>`
 export const Input = styled.input`
   display: block;
   width: 100%;
-  max-width: 300px;
   border: 2px solid black;
   padding: 0.25rem;
   margin-bottom: 1rem;
@@ -33,7 +32,4 @@ export const TextButton = styled.button`
   &:hover {
     text-decoration: none;
   }
-`;
-
-export const Form = styled.form`
 `;
