@@ -2,12 +2,6 @@
 
 import { createUser } from "@/lib/actions";
 
-export async function createAccount(formData: FormData) {
-    const username = formData.get('username');
-    const password = formData.get('password');
-
-    if(!username || !password)
-        return;
-
+export async function createAccount(username: string, password: string) {
     createUser({username: username.toString(), password: password.toString()})
 }

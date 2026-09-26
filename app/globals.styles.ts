@@ -17,12 +17,12 @@ export const Button = styled.button<{ $primary?: boolean }>`
   margin-bottom: 1rem;
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<{ $error?: boolean }>`
   display: block;
   width: 100%;
-  border: 2px solid black;
+  border: 2px solid ${props => (props.$error ? 'red' : 'black')};
   padding: 0.25rem;
-  margin-bottom: 1rem;
+  margin-bottom: ${props => (props.$error ? '0.25rem' : '1rem')};
 `;
 
 export const TextButton = styled.button`
@@ -32,4 +32,11 @@ export const TextButton = styled.button`
   &:hover {
     text-decoration: none;
   }
+`;
+
+export const ErrorMessage = styled.text`
+  display: block;
+  color: red;
+  font-size: 14px;
+  margin-bottom: 1rem;
 `;

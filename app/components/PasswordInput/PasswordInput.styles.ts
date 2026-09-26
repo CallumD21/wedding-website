@@ -8,6 +8,6 @@ export const PasswordInputContainer = styled.div`
     position: absolute;
     font-size: 14px;
     right: 0;
-    bottom: -20px;
+    top: 38px;
   }
 `;
