@@ -3,35 +3,23 @@
 import { useState } from "react";
 import { Button, Input, TextButton } from "../../globals.styles";
 import { createAccount } from "./SignInActions";
-import { PasswordInput, SignInForm } from "./SignIn.styles";
+import { SignInForm } from "./SignIn.styles";
+import PasswordInput from "../PasswordInput/PasswordInput";
 
 
 const SignIn = () => {
   const [createAccountForm, setCreateAccountForm] = useState<boolean>(false);
-  const [passwordInputType, setPasswordInputType] = useState<string>("password");
-  const [confirmPasswordInputType, setConfirmPasswordInputType] = useState<string>("password");
-
-  const togglePasswordType = (passwordInputType: string, setPasswordInputType: (passwordInputType: string) => void) => {
-    setPasswordInputType(passwordInputType === "password" ? "text" : "password");
-  }
+  const [password, setPassword] = useState<string>("");
+  const [createPassword, setCreatePassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   return (
     <>
         { createAccountForm ?
             <SignInForm action={createAccount}>
                 <Input placeholder="Create username" type="text" name="username" />
-                <PasswordInput>
-                    <Input placeholder="Create password" type={passwordInputType} name="password" />
-                    <TextButton type="button" onClick={() => togglePasswordType(passwordInputType, setPasswordInputType)}>
-                        show password
-                    </TextButton>
-                </PasswordInput>
-                <PasswordInput>
-                    <Input placeholder="Create password" type={confirmPasswordInputType} name="confirmPassword" />
-                    <TextButton type="button" onClick={() => togglePasswordType(confirmPasswordInputType, setConfirmPasswordInputType)}>
-                        show password
-                    </TextButton>
-                </PasswordInput>
+                <PasswordInput password={createPassword} setPassword={setCreatePassword} placeholder="Create password" />
+                <PasswordInput password={confirmPassword} setPassword={setConfirmPassword} placeholder="Confirm password" />
                 <Button type="submit">
                     Create
                 </Button>
@@ -39,7 +27,7 @@ const SignIn = () => {
         :
             <SignInForm>
                 <Input placeholder="Username" type="text" />
-                <Input placeholder="Password" type="password" />
+                <PasswordInput password={password} setPassword={setPassword} placeholder="Password" />
                 <Button type="submit">
                     Log in
                 </Button>
