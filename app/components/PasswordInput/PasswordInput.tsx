@@ -8,7 +8,7 @@ interface PasswordInputProps {
   password: string;
   setPassword: (password: string) => void;
   placeholder: string;
-  errorMessage: string;
+  errorMessage?: string[];
   clearError: () => void;
 }
 
@@ -17,8 +17,8 @@ const PasswordInput = ({password, setPassword, placeholder, errorMessage, clearE
 
   return (
     <PasswordInputContainer>
-        <Input $error={errorMessage != ""} placeholder={placeholder} type={passwordInputType} value={password} onChange={e => setPassword(e.target.value)} onClick={clearError} />
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+        <Input $error={errorMessage !== undefined} placeholder={placeholder} type={passwordInputType} value={password} onChange={e => setPassword(e.target.value)} onClick={clearError} />
+        {errorMessage && <ErrorMessage>{errorMessage[0]}</ErrorMessage>}
         <TextButton type="button" onClick={() => setPasswordInputType(passwordInputType === "password" ? "text" : "password")} name="password">
            {passwordInputType === "password" ? "show" : "hide"} password
         </TextButton>

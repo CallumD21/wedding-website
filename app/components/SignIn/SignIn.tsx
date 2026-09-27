@@ -5,12 +5,7 @@ import { Button, ErrorMessage, Input, TextButton } from "../../globals.styles";
 import { createAccount } from "./SignInActions";
 import { SignInForm } from "./SignIn.styles";
 import PasswordInput from "../PasswordInput/PasswordInput";
-
-interface CreateAccountErrors {
-    username: string;
-    password: string;
-    confirmPassword: string;
-}
+import { CreateAccountErrors } from "@/app/lib/types/SignInTypes";
 
 const SignIn = () => {
   const [createAccountForm, setCreateAccountForm] = useState<boolean>(false);
@@ -20,53 +15,27 @@ const SignIn = () => {
   const [createPassword, setCreatePassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const EMPTY_CREATE_ACCOUNT_ERRORS: CreateAccountErrors = {
-    username: "",
-    password: "",
-    confirmPassword: "",
-  }
-  const [createAccountErrors, setCreateAccountErrors] = useState<CreateAccountErrors>(EMPTY_CREATE_ACCOUNT_ERRORS); 
+  const [createAccountErrors, setCreateAccountErrors] = useState<CreateAccountErrors>();
 
-  const createEmptyError = (value: string): string => value.trim().length === 0 ? "Please enter a value" : ""
-
-  const onCreateAccount = (event: SubmitEvent<HTMLFormElement>) => {
+  const onCreateAccount = async (event: SubmitEvent<HTMLFormElement>) => {
      event.preventDefault();
-     const trimmedUsername = createUsername.trim();
-     const trimmedPassword = createPassword.trim();
-     const trimmedConfirmPassword = confirmPassword.trim();
 
-     if(!trimmedUsername || !trimmedPassword || !confirmPassword){
-        setCreateAccountErrors({
-            username: createEmptyError(trimmedUsername),
-            password: createEmptyError(trimmedPassword),
-            confirmPassword: createEmptyError(trimmedConfirmPassword),
-        });
+    setCreateAccountErrors(undefined);
+    const formState = await createAccount(createUsername, createPassword, confirmPassword);
 
-        return;
-     }
-
-     if(trimmedPassword !== trimmedConfirmPassword){
-        setCreateAccountErrors({
-            username: "",
-            password: "Passwords do not match",
-            confirmPassword: "Passwords do not match",
-        });
-
-        return;
-     }
-
-     setCreateAccountErrors(EMPTY_CREATE_ACCOUNT_ERRORS);
-     createAccount(trimmedUsername, trimmedPassword);
+    if(!formState.success){
+        setCreateAccountErrors(formState.errors);
+    }
   }
 
   return (
     <>
         { createAccountForm ?
             <SignInForm onSubmit={onCreateAccount}>
-                <Input $error={createAccountErrors.username != ""} placeholder="Create username" type="text" name="username" value={createUsername} onChange={e => setCreateUsername(e.target.value)} onClick={() => setCreateAccountErrors({...createAccountErrors, username: ""})} />
-                {createAccountErrors.username && <ErrorMessage>{createAccountErrors.username}</ErrorMessage>}
-                <PasswordInput password={createPassword} setPassword={setCreatePassword} placeholder="Create password" errorMessage={createAccountErrors.password} clearError={() => setCreateAccountErrors({...createAccountErrors, password: ""})} />
-                <PasswordInput password={confirmPassword} setPassword={setConfirmPassword} placeholder="Confirm password" errorMessage={createAccountErrors.confirmPassword} clearError={() => setCreateAccountErrors({...createAccountErrors, confirmPassword: ""})} />
+                <Input $error={createAccountErrors?.username !== undefined} placeholder="Create username" type="text" name="username" value={createUsername} onChange={e => setCreateUsername(e.target.value)} onClick={() => setCreateAccountErrors({...createAccountErrors, username: undefined})} />
+                {createAccountErrors?.username && <ErrorMessage>{createAccountErrors.username}</ErrorMessage>}
+                <PasswordInput password={createPassword} setPassword={setCreatePassword} placeholder="Create password" errorMessage={createAccountErrors?.password} clearError={() => setCreateAccountErrors({...createAccountErrors, password: undefined})} />
+                <PasswordInput password={confirmPassword} setPassword={setConfirmPassword} placeholder="Confirm password" errorMessage={createAccountErrors?.confirmPassword} clearError={() => setCreateAccountErrors({...createAccountErrors, confirmPassword: undefined})} />
                 <Button type="submit">
                     Create
                 </Button>
@@ -74,7 +43,7 @@ const SignIn = () => {
         :
             <SignInForm>
                 <Input placeholder="Username" type="text" />
-                <PasswordInput password={password} setPassword={setPassword} placeholder="Password" errorMessage="" clearError={() => {}} />
+                <PasswordInput password={password} setPassword={setPassword} placeholder="Password" clearError={() => {}} />
                 <Button type="submit">
                     Log in
                 </Button>
