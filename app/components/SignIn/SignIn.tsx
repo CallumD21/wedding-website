@@ -2,10 +2,10 @@
 
 import { useState, SubmitEvent } from "react";
 import { Button, Message, Input, TextButton } from "../../globals.styles";
-import { createAccount } from "./SignInActions";
+import { createAccount, signIn } from "./SignInActions";
 import { SignInForm } from "./SignIn.styles";
 import PasswordInput from "../PasswordInput/PasswordInput";
-import { CreateAccountErrors } from "@/app/lib/types/SignInTypes";
+import { CreateAccountErrors, SignInErrors } from "@/app/lib/types/SignInTypes";
 
 const SignIn = () => {
   const [createAccountForm, setCreateAccountForm] = useState<boolean>(false);
@@ -17,6 +17,7 @@ const SignIn = () => {
   const [createPassword, setCreatePassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
+  const [signInErrors, setSignInErrors] = useState<SignInErrors>();
   const [createAccountErrors, setCreateAccountErrors] = useState<CreateAccountErrors>();
 
   const onCreateAccount = async (event: SubmitEvent<HTMLFormElement>) => {
@@ -37,6 +38,17 @@ const SignIn = () => {
     }
   }
 
+  const onSignIn = async (event: SubmitEvent<HTMLFormElement>) => {
+     event.preventDefault();
+
+    setSignInErrors(undefined);
+    const formState = await signIn(username, password);
+
+    if(!formState.success){
+        setSignInErrors(formState.errors);
+    }
+  }
+
   return (
     <>
         { createAccountForm ?
@@ -50,10 +62,11 @@ const SignIn = () => {
                 </Button>
             </SignInForm>
         :
-            <SignInForm>
+            <SignInForm onSubmit={onSignIn}>
                 {createAccountSuccess && <Message $status="success">Account created successfully! Please log in below:</Message>}
-                <Input placeholder="Username" type="text" value={username} onChange={e => setUsername(e.target.value)}/>
-                <PasswordInput password={password} setPassword={setPassword} placeholder="Password" clearError={() => {}} />
+                <Input $error={signInErrors?.username !== undefined} placeholder="Username" type="text" value={username} onChange={e => setUsername(e.target.value)} onClick={() => setSignInErrors({...signInErrors, username: undefined})}/>
+                {signInErrors?.username && <Message $status="error">{signInErrors.username}</Message>}
+                <PasswordInput password={password} setPassword={setPassword} placeholder="Password" errorMessage={signInErrors?.password} clearError={() => setSignInErrors({...signInErrors, password: undefined})} />
                 <Button type="submit">
                     Log in
                 </Button>

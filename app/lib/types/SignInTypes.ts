@@ -3,8 +3,7 @@ import * as z from 'zod'
 export const CreateAccountFormSchema = z.object({
   username: z
     .string()
-    .min(2, { error: 'Username must be at least 2 characters long.' })
-    .trim(),
+    .min(2, { error: 'Username must be at least 2 characters long.' }),
   password: z
     .string()
     .min(8, { error: 'Be at least 8 characters long' })
@@ -12,8 +11,7 @@ export const CreateAccountFormSchema = z.object({
     .regex(/[0-9]/, { error: 'Contain at least one number.' })
     .regex(/[^a-zA-Z0-9]/, {
       error: 'Contain at least one special character.',
-    })
-    .trim(),
+    }),
   confirmPassword: z
     .string()
     .min(8, { error: 'Be at least 8 characters long' })
@@ -21,8 +19,7 @@ export const CreateAccountFormSchema = z.object({
     .regex(/[0-9]/, { error: 'Contain at least one number.' })
     .regex(/[^a-zA-Z0-9]/, {
       error: 'Contain at least one special character.',
-    })
-    .trim(),
+    }),
 });
  
 export interface CreateAccountErrors {
@@ -34,4 +31,23 @@ export interface CreateAccountErrors {
 export interface CreateAccountFormState {
   success: boolean;
   errors?: CreateAccountErrors;
+};
+
+export const SignInFormSchema = z.object({
+  username: z
+    .string()
+    .min(1, { error: 'Username must not be empty.' }),
+  password: z
+    .string()
+    .min(1, { error: 'Password must not be empty.' }),
+});
+
+export interface SignInErrors {
+    username?: string[];
+    password?: string[];
+}
+
+export interface SignInFormState {
+  success: boolean;
+  errors?: SignInErrors;
 };
