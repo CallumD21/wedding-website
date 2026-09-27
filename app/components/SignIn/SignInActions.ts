@@ -4,6 +4,7 @@ import * as z from 'zod'
 import bcrypt from 'bcryptjs';
 import { createUser, getUserByUsername } from "@/app/lib/actions";
 import { CreateAccountFormSchema, CreateAccountFormState, SignInFormSchema, SignInFormState } from '@/app/lib/types/SignInTypes';
+import { redirect } from 'next/navigation';
 
 export async function createAccount(username: string, password: string, confirmPassword: string): Promise<CreateAccountFormState> {
     const trimmedUsername = username.trim();   
@@ -88,7 +89,5 @@ export async function signIn(username: string, password: string): Promise<SignIn
         };
     }
 
-    return{
-        success: true
-    };
+    redirect("/account");
 }
