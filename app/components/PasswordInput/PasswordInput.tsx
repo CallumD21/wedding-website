@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import { ErrorMessage, Input, TextButton } from "../../globals.styles";
+import { Message, Input, TextButton } from "../../globals.styles";
 import { PasswordInputContainer } from "./PasswordInput.styles";
 
 interface PasswordInputProps {
@@ -18,7 +18,7 @@ const PasswordInput = ({password, setPassword, placeholder, errorMessage, clearE
   return (
     <PasswordInputContainer>
         <Input $error={errorMessage !== undefined} placeholder={placeholder} type={passwordInputType} value={password} onChange={e => setPassword(e.target.value)} onClick={clearError} />
-        {errorMessage && <ErrorMessage>{errorMessage[0]}</ErrorMessage>}
+        {errorMessage && <Message $status="error">{errorMessage[0]}</Message>}
         <TextButton type="button" onClick={() => setPasswordInputType(passwordInputType === "password" ? "text" : "password")} name="password">
            {passwordInputType === "password" ? "show" : "hide"} password
         </TextButton>

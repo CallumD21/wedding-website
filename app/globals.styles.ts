@@ -34,9 +34,9 @@ export const TextButton = styled.button`
   }
 `;
 
-export const ErrorMessage = styled.text`
+export const Message = styled.text<{ $status?: string }>`
   display: block;
-  color: red;
+  color: ${props => (props.$status === "error" ? 'red' : 'green')};
   font-size: 14px;
   margin-bottom: 1rem;
 `;
