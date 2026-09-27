@@ -1,7 +1,7 @@
 'use server'
 
 import { hash } from 'bcryptjs';
-import { createUser, getUserByUsername } from "@/lib/actions";
+import { createUser, getUserByUsername } from "@/app/lib/actions";
 
 export async function createAccount(username: string, password: string) {   
     const existingUser = await getUserByUsername(username);
