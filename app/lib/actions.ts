@@ -2,8 +2,8 @@ import { eq } from 'drizzle-orm';
 import { db } from './db';
 import { InsertSession, InsertUser, Session, sessionTable, User, usersTable } from '../../db/schema';
 
-export async function createUser(data: InsertUser) {
-  await db.insert(usersTable).values(data);
+export async function createUser(data: InsertUser): Promise<User[]> {
+  return await db.insert(usersTable).values(data).returning();
 }
 
 export async function getUserByUsername(username: User['username']): Promise<Array<User>> {

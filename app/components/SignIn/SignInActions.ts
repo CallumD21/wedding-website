@@ -41,11 +41,20 @@ export async function createAccount(username: string, password: string, confirmP
             success: false,
             errors: {
                 username: ["User already exists"]
-            }
-        };
+        }
+    };
 
     const hashedPassword = await bcrypt.hash(trimmedPassword, 10);
-    createUser({username: trimmedUsername, password: hashedPassword});
+    const user = await createUser({username: trimmedUsername, password: hashedPassword});
+
+    if(user.length === 0){
+        return {
+            success: false,
+            errors: {
+                username: ["Something went wrong. Please try again!"]
+            }
+        };
+    }
 
     return{
         success: true
