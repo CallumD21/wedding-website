@@ -1,6 +1,7 @@
-import { Heading } from "../globals.styles";
+'use client'
 
-
+import { logOut } from "../components/SignIn/SignInActions";
+import { Button, Heading } from "../globals.styles";
 
 export default function Account() {
   return (
@@ -10,6 +11,7 @@ export default function Account() {
           <Heading>
             Account page
           </Heading>
+          <Button onClick={() => logOut()}>Log out</Button>
         </div>
       </main>
     </div>

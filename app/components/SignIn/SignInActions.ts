@@ -2,7 +2,7 @@
 
 import * as z from 'zod'
 import bcrypt from 'bcryptjs';
-import { createSession, createUser, getUserByUsername } from "@/app/lib/actions";
+import { createSession, createUser, deleteSession, getUsers } from "@/app/lib/actions";
 import { CreateAccountFormSchema, CreateAccountFormState, SignInFormSchema, SignInFormState } from '@/app/lib/types/SignInTypes';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
@@ -35,7 +35,7 @@ export async function createAccount(username: string, password: string, confirmP
         };
     }
 
-    const existingUser = await getUserByUsername(trimmedUsername);
+    const existingUser = await getUsers(trimmedUsername);
     if(existingUser.length > 0)
         return {
             success: false,
@@ -77,7 +77,7 @@ export async function signIn(username: string, password: string): Promise<SignIn
         };
     }
 
-    const existingUsers = await getUserByUsername(trimmedUsername);
+    const existingUsers = await getUsers(trimmedUsername);
 
     if(existingUsers.length === 0){
         return{
@@ -114,4 +114,15 @@ export async function signIn(username: string, password: string): Promise<SignIn
     });
 
     redirect("/account");
+}
+
+export async function logOut() {
+    const session = (await cookies()).get('session')?.value;
+    
+    if(session){
+        deleteSession(session);
+        (await cookies()).delete('session');
+    }
+
+    redirect("/");
 }
