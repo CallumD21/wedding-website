@@ -2,7 +2,7 @@
 
 import * as z from 'zod'
 import bcrypt from 'bcryptjs';
-import { createUser, getUserByUsername } from "@/app/lib/actions";
+import { createSession, createUser, getUserByUsername } from "@/app/lib/actions";
 import { CreateAccountFormSchema, CreateAccountFormState, SignInFormSchema, SignInFormState } from '@/app/lib/types/SignInTypes';
 import { redirect } from 'next/navigation';
 
@@ -67,9 +67,9 @@ export async function signIn(username: string, password: string): Promise<SignIn
         };
     }
 
-    const existingUser = await getUserByUsername(trimmedUsername);
+    const existingUsers = await getUserByUsername(trimmedUsername);
 
-    if(existingUser.length === 0){
+    if(existingUsers.length === 0){
         return{
             success: false,
             errors: {
@@ -78,7 +78,8 @@ export async function signIn(username: string, password: string): Promise<SignIn
         };
     }
 
-    const passwordsMatch = await bcrypt.compare(trimmedPassword, existingUser[0].password);
+    const existingUser = existingUsers[0];
+    const passwordsMatch = await bcrypt.compare(trimmedPassword, existingUser.password);
     
     if(!passwordsMatch){
         return{
@@ -88,6 +89,9 @@ export async function signIn(username: string, password: string): Promise<SignIn
             }
         };
     }
+
+    const expiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    createSession({sessionKey: crypto.randomUUID(), userId: existingUser.id, expiryDate })
 
     redirect("/account");
 }
