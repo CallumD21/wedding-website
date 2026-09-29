@@ -9,7 +9,7 @@ export default function Home() {
           <Heading>
             Amber and Callum's Wedding Website
           </Heading>
-          <a href="/log-in">Log in</a>
+          <a href="/login">Log in</a>
         </div>
       </main>
     </div>

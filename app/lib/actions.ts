@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from './db';
-import { InsertSession, InsertUser, sessionTable, User, usersTable } from '../../db/schema';
+import { InsertSession, InsertUser, Session, sessionTable, User, usersTable } from '../../db/schema';
 
 export async function createUser(data: InsertUser) {
   await db.insert(usersTable).values(data);
@@ -12,4 +12,8 @@ export async function getUserByUsername(username: User['username']): Promise<Arr
 
 export async function createSession(data: InsertSession) {
   await db.insert(sessionTable).values(data);
+}
+
+export async function getSessionBySessionKey(sessionKey: Session['sessionKey']): Promise<Array<Session>> {
+  return db.select().from(sessionTable).where(eq(sessionTable.sessionKey, sessionKey));
 }

@@ -19,6 +19,7 @@ export const sessionTable = pgTable('session_table', {
 });
 
 export type InsertSession = typeof sessionTable.$inferInsert;
+export type Session = typeof sessionTable.$inferSelect;
 
 export const relations = defineRelations({ usersTable, sessionTable }, (r) => ({
   sessionTable: {

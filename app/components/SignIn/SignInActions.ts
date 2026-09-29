@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import { createSession, createUser, getUserByUsername } from "@/app/lib/actions";
 import { CreateAccountFormSchema, CreateAccountFormState, SignInFormSchema, SignInFormState } from '@/app/lib/types/SignInTypes';
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 export async function createAccount(username: string, password: string, confirmPassword: string): Promise<CreateAccountFormState> {
     const trimmedUsername = username.trim();   
@@ -91,7 +92,17 @@ export async function signIn(username: string, password: string): Promise<SignIn
     }
 
     const expiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    createSession({sessionKey: crypto.randomUUID(), userId: existingUser.id, expiryDate })
+    const session = crypto.randomUUID();
+    createSession({sessionKey: session, userId: existingUser.id, expiryDate });
+    
+    const cookieStore = await cookies()
+    cookieStore.set('session', session, {
+        httpOnly: true,
+        secure: true,
+        expires: expiryDate,
+        sameSite: 'lax',
+        path: '/',
+    });
 
     redirect("/account");
 }

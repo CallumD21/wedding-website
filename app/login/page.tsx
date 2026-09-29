@@ -8,7 +8,7 @@ export default function Page() {
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <div>
           <Heading>
-            Amber and Callum's Wedding Website
+            Login
           </Heading>
           <SignIn />
         </div>
