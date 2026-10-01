@@ -72,9 +72,9 @@ const SignIn = () => {
                 </Button>
             </SignInForm>
         }
-        <TextButton onClick={() => setCreateAccountForm(!createAccountForm)}>
+        {/* <TextButton onClick={() => setCreateAccountForm(!createAccountForm)}>
             { createAccountForm ? "Back to log in" : "Create account"}
-        </TextButton>
+        </TextButton> */}
   </>);
 }
 
