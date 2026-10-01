@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { getSessions } from "./app/lib/actions";
+import { deleteSession, getSessions } from "./app/lib/actions";
 
 const PUBLIC_ROUTES = ['/login', '/']
 
@@ -8,10 +8,23 @@ export default async function proxy(req: NextRequest) {
     const path = req.nextUrl.pathname;
     const isPublicRoute = PUBLIC_ROUTES.includes(path);
 
-    const session = (await cookies()).get('session')?.value;
-    const isValidSession = session ? (await getSessions(session)).length > 0 : false;
+    if(isPublicRoute) {
+        return NextResponse.next();
+    }
 
-    if (!isPublicRoute && !isValidSession) {
+    const session = (await cookies()).get('session')?.value;
+
+    if(!session){
+         return NextResponse.redirect(new URL('/login', req.nextUrl));
+    }
+
+    const sessions = await getSessions(session);
+    const isValidSession = sessions.length > 0;
+    const isSessionExpired = isValidSession ? sessions[0].expiryDate < new Date() : true;
+
+    if (!isValidSession || isSessionExpired) {
+        deleteSession(session);
+        (await cookies()).delete('session');
         return NextResponse.redirect(new URL('/login', req.nextUrl));
     }
 
