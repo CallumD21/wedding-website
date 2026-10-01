@@ -1,5 +1,5 @@
 import { Heading } from "../globals.styles";
-import SignIn from "../components/SignIn/SignIn";
+import Login from "../components/Login/Login";
 
 
 export default function Page() {
@@ -10,7 +10,7 @@ export default function Page() {
           <Heading>
             Login
           </Heading>
-          <SignIn />
+          <Login />
         </div>
       </main>
     </div>

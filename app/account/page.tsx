@@ -1,6 +1,6 @@
 'use client'
 
-import { logOut } from "../components/SignIn/SignInActions";
+import { logOut } from "../components/Login/LoginActions";
 import { Button, Heading } from "../globals.styles";
 
 export default function Account() {

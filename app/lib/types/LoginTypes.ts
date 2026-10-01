@@ -33,7 +33,7 @@ export interface CreateAccountFormState {
   errors?: CreateAccountErrors;
 };
 
-export const SignInFormSchema = z.object({
+export const LoginFormSchema = z.object({
   username: z
     .string()
     .min(1, { error: 'Username must not be empty.' }),
@@ -42,12 +42,12 @@ export const SignInFormSchema = z.object({
     .min(1, { error: 'Password must not be empty.' }),
 });
 
-export interface SignInErrors {
+export interface LoginErrors {
     username?: string[];
     password?: string[];
 }
 
-export interface SignInFormState {
+export interface LoginFormState {
   success: boolean;
-  errors?: SignInErrors;
+  errors?: LoginErrors;
 };

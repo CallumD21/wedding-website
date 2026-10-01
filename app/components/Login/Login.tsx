@@ -2,12 +2,12 @@
 
 import { useState, SubmitEvent } from "react";
 import { Button, Message, Input, TextButton } from "../../globals.styles";
-import { createAccount, signIn } from "./SignInActions";
-import { SignInForm } from "./SignIn.styles";
+import { createAccount, login } from "./LoginActions";
+import { LoginForm } from "./Login.styles";
 import PasswordInput from "../PasswordInput/PasswordInput";
-import { CreateAccountErrors, SignInErrors } from "@/app/lib/types/SignInTypes";
+import { CreateAccountErrors, LoginErrors } from "@/app/lib/types/LoginTypes";
 
-const SignIn = () => {
+const Login = () => {
   const [createAccountForm, setCreateAccountForm] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -17,7 +17,7 @@ const SignIn = () => {
   const [createPassword, setCreatePassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const [signInErrors, setSignInErrors] = useState<SignInErrors>();
+  const [LoginErrors, setLoginErrors] = useState<LoginErrors>();
   const [createAccountErrors, setCreateAccountErrors] = useState<CreateAccountErrors>();
 
   const onCreateAccount = async (event: SubmitEvent<HTMLFormElement>) => {
@@ -38,21 +38,21 @@ const SignIn = () => {
     }
   }
 
-  const onSignIn = async (event: SubmitEvent<HTMLFormElement>) => {
+  const onLogin = async (event: SubmitEvent<HTMLFormElement>) => {
      event.preventDefault();
 
-    setSignInErrors(undefined);
-    const formState = await signIn(username, password);
+    setLoginErrors(undefined);
+    const formState = await login(username, password);
 
     if(!formState.success){
-        setSignInErrors(formState.errors);
+        setLoginErrors(formState.errors);
     }
   }
 
   return (
     <>
         { createAccountForm ?
-            <SignInForm onSubmit={onCreateAccount}>
+            <LoginForm onSubmit={onCreateAccount}>
                 <Input $error={createAccountErrors?.username !== undefined} placeholder="Create username" type="text" name="username" value={createUsername} onChange={e => setCreateUsername(e.target.value)} onClick={() => setCreateAccountErrors({...createAccountErrors, username: undefined})} />
                 {createAccountErrors?.username && <Message $status="error">{createAccountErrors.username}</Message>}
                 <PasswordInput password={createPassword} setPassword={setCreatePassword} placeholder="Create password" errorMessage={createAccountErrors?.password} clearError={() => setCreateAccountErrors({...createAccountErrors, password: undefined})} />
@@ -60,17 +60,17 @@ const SignIn = () => {
                 <Button type="submit">
                     Create
                 </Button>
-            </SignInForm>
+            </LoginForm>
         :
-            <SignInForm onSubmit={onSignIn}>
+            <LoginForm onSubmit={onLogin}>
                 {createAccountSuccess && <Message $status="success">Account created successfully! Please log in below:</Message>}
-                <Input $error={signInErrors?.username !== undefined} placeholder="Username" type="text" value={username} onChange={e => setUsername(e.target.value)} onClick={() => setSignInErrors({...signInErrors, username: undefined})}/>
-                {signInErrors?.username && <Message $status="error">{signInErrors.username}</Message>}
-                <PasswordInput password={password} setPassword={setPassword} placeholder="Password" errorMessage={signInErrors?.password} clearError={() => setSignInErrors({...signInErrors, password: undefined})} />
+                <Input $error={LoginErrors?.username !== undefined} placeholder="Username" type="text" value={username} onChange={e => setUsername(e.target.value)} onClick={() => setLoginErrors({...LoginErrors, username: undefined})}/>
+                {LoginErrors?.username && <Message $status="error">{LoginErrors.username}</Message>}
+                <PasswordInput password={password} setPassword={setPassword} placeholder="Password" errorMessage={LoginErrors?.password} clearError={() => setLoginErrors({...LoginErrors, password: undefined})} />
                 <Button type="submit">
                     Log in
                 </Button>
-            </SignInForm>
+            </LoginForm>
         }
         {/* <TextButton onClick={() => setCreateAccountForm(!createAccountForm)}>
             { createAccountForm ? "Back to log in" : "Create account"}
@@ -78,4 +78,4 @@ const SignIn = () => {
   </>);
 }
 
-export default SignIn;
+export default Login;

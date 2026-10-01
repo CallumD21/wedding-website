@@ -1,5 +1,5 @@
 import styled from 'styled-components';
 
-export const SignInForm = styled.form`
+export const LoginForm = styled.form`
   max-width: 300px;
 `;

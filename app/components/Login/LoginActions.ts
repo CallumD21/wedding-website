@@ -3,7 +3,7 @@
 import * as z from 'zod'
 import bcrypt from 'bcryptjs';
 import { createSession, createUser, deleteSession, getUsers } from "@/app/lib/actions";
-import { CreateAccountFormSchema, CreateAccountFormState, SignInFormSchema, SignInFormState } from '@/app/lib/types/SignInTypes';
+import { CreateAccountFormSchema, CreateAccountFormState, LoginFormSchema, LoginFormState } from '@/app/lib/types/LoginTypes';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
@@ -61,11 +61,11 @@ export async function createAccount(username: string, password: string, confirmP
     };
 }
 
-export async function signIn(username: string, password: string): Promise<SignInFormState> {
+export async function login(username: string, password: string): Promise<LoginFormState> {
     const trimmedUsername = username.trim();   
     const trimmedPassword = password.trim(); 
     
-    const validatedFields = SignInFormSchema.safeParse({
+    const validatedFields = LoginFormSchema.safeParse({
         username: trimmedUsername,
         password: trimmedPassword,
     });
