@@ -1,6 +1,6 @@
 'use client'
 
-import { NavbarContainer } from "./Navbar.styles";
+import { NavbarContainer, NavbarLinks } from "./Navbar.styles";
 
 
 //STYLED COMPONENT ISSUE
@@ -8,8 +8,8 @@ import { NavbarContainer } from "./Navbar.styles";
 const Navbar = () => {
   return (
     <NavbarContainer>
-        <a href="/">Home</a>
-        <a href="/login">Log in</a>
+        <NavbarLinks href="/">Home</NavbarLinks>
+        <NavbarLinks href="/login">Log in</NavbarLinks>
     </NavbarContainer>
   );
 }

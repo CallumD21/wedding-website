@@ -1,4 +1,9 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+
+export const Body = styled.body`
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+`;
 
 export const Heading = styled.h1`
   font-size: 2rem;
@@ -7,8 +12,8 @@ export const Heading = styled.h1`
 `;
 
 export const Button = styled.button<{ $primary?: boolean }>`
-  background: ${props => (props.$primary ? 'palevioletred' : 'white')};
-  color: ${props => (props.$primary ? 'white' : 'palevioletred')};
+  background: ${(props) => (props.$primary ? "palevioletred" : "white")};
+  color: ${(props) => (props.$primary ? "white" : "palevioletred")};
   font-size: 1em;
   padding: 0.25em 1em;
   border: 2px solid palevioletred;
@@ -20,15 +25,15 @@ export const Button = styled.button<{ $primary?: boolean }>`
 export const Input = styled.input<{ $error?: boolean }>`
   display: block;
   width: 100%;
-  border: 2px solid ${props => (props.$error ? 'red' : 'black')};
+  border: 2px solid ${(props) => (props.$error ? "red" : "black")};
   padding: 0.25rem;
-  margin-bottom: ${props => (props.$error ? '0.25rem' : '1rem')};
+  margin-bottom: ${(props) => (props.$error ? "0.25rem" : "1rem")};
 `;
 
 export const TextButton = styled.button`
   text-decoration: underline;
   cursor: pointer;
- 
+
   &:hover {
     text-decoration: none;
   }
@@ -36,7 +41,7 @@ export const TextButton = styled.button`
 
 export const Message = styled.text<{ $status?: string }>`
   display: block;
-  color: ${props => (props.$status === "error" ? 'red' : 'green')};
+  color: ${(props) => (props.$status === "error" ? "red" : "green")};
   font-size: 14px;
   margin-bottom: 1rem;
 `;
