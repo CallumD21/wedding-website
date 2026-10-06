@@ -39,11 +39,13 @@ export const Input = styled.input<{ $error?: boolean }>`
   display: block;
   width: 100%;
   border: 2px solid ${(props) => (props.$error ? "red" : "black")};
-  padding: 0.25rem;
+  padding: 0.5rem;
   margin-bottom: ${(props) => (props.$error ? "0.25rem" : "1rem")};
 `;
 
 export const TextButton = styled.button`
+  background: unset;
+  border: unset;
   text-decoration: underline;
   cursor: pointer;
 
