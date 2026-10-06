@@ -7,8 +7,3 @@ export const NavbarContainer = styled.div`
   justify-content: end;
   gap: 0.5rem;
 `;
-
-export const NavbarLinks = styled.a`
-  color: black;
-  text-decoration: unset;
-`;

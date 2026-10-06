@@ -1,19 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.styles";
 import { Page } from "./layout.styles";
 import Navbar from "./components/Navbar/Navbar";
-import { Body } from "./globals.styles";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { GlobalStyles } from "./globals.styles";
+import StyledComponentsRegistry from "./lib/registry";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,12 +12,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en">
-      <Body>
-        <Navbar />
-        <Page>{children}</Page>
-      </Body>
+    <html lang="en">
+      <body>
+        <GlobalStyles />
+        <StyledComponentsRegistry>
+          <Navbar />
+          <Page>{children}</Page>
+        </StyledComponentsRegistry>
+      </body>
     </html>
   );
 }

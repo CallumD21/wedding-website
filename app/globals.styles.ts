@@ -1,8 +1,21 @@
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
-export const Body = styled.body`
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
+export const GlobalStyles = createGlobalStyle`
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
 `;
 
 export const Heading = styled.h1`
