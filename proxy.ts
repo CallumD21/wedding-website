@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { deleteSession, getSessions } from "./app/lib/actions";
+import { validateSession } from "./app/components/Login/LoginActions";
 
 const LOGIN_PAGE = "/login";
 const PUBLIC_ROUTES = [LOGIN_PAGE, "/"];
@@ -15,29 +16,18 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const session = (await cookies()).get("session")?.value;
+  const isValidSession = await validateSession();
 
-  if (!session) {
-    return isLoginPage
-      ? NextResponse.next()
-      : NextResponse.redirect(new URL("/login", req.nextUrl));
-  }
-
-  const sessions = await getSessions(session);
-  const isValidSession = sessions.length > 0;
-  const isSessionExpired = isValidSession
-    ? sessions[0].expiryDate < new Date()
-    : true;
-
-  if (!isValidSession || isSessionExpired) {
-    deleteSession(session);
-    (await cookies()).delete("session");
-    return NextResponse.redirect(new URL("/login", req.nextUrl));
+  if (isValidSession) {
+    if (isLoginPage) {
+      return NextResponse.redirect(new URL("/account", req.nextUrl));
+    }
+    return NextResponse.next();
   }
 
   return isLoginPage
-    ? NextResponse.redirect(new URL("/account", req.nextUrl))
-    : NextResponse.next();
+    ? NextResponse.next()
+    : NextResponse.redirect(new URL("/login", req.nextUrl));
 }
 
 // Routes Proxy should not run on
