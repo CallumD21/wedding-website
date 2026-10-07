@@ -1,6 +1,3 @@
-'use client'
-
-import { logOut } from "../components/Login/LoginActions";
 import { Button, Heading } from "../globals.styles";
 
 export default function Vendors() {
@@ -9,7 +6,6 @@ export default function Vendors() {
       <Heading>
         Vendor page
       </Heading>
-      <Button onClick={() => logOut()}>Log out</Button>
     </>
   );
 }

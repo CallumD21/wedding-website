@@ -141,7 +141,7 @@ export async function login(
 }
 
 async function deleteSessionData(session: string) {
-  deleteSession(session);
+  await deleteSession(session);
   (await cookies()).delete("session");
 }
 
