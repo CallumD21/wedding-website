@@ -8,6 +8,11 @@ const Navbar = async () => {
   return (
     <NavbarContainer>
       <a href="/">Home</a>
+      {isValidSession && (
+        <>
+          <a href="/vendors">Vendors</a>
+        </>
+      )}
       {isValidSession ? <NavbarLogOutButton /> : <a href="/login">Login</a>}
     </NavbarContainer>
   );

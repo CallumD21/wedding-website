@@ -1,4 +1,4 @@
-import { Button, Heading } from "../globals.styles";
+import { Heading } from "../globals.styles";
 
 export default function Vendors() {
   return (
